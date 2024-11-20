@@ -114,7 +114,7 @@ class DepthPro:
         if video is not None:
             images_pillow_with_size = load_video_from_path(video, scale_factor, start_second, end_second)
         elif images is not None and is_base64_string(images[0]):
-            images_pillow_with_size = [base64_to_image_with_size(image) for image in images]
+            images_pillow_with_size = [base64_to_image_with_size(image, scale_factor) for image in images]
         else:
-            images_pillow_with_size = [load_image_from_path(image_path) for image_path in images]
+            images_pillow_with_size = [load_image_from_path(image_path, scale_factor) for image_path in images]
         return images_pillow_with_size

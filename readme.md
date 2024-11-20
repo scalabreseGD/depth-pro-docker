@@ -21,11 +21,11 @@ export version=x.y.z
 ```
 ### GPU
 ```shell
-bash install.sh  sam-2 gpu registry
+bash install.sh depth-pro gpu registry
 ```
 
 ```shell
-docker run --gpus all -p 8080:8080 -e PORT=8080 -v ./huggingface:/root/.cache/huggingface/ sam-2-gpu:${version}
+docker run --gpus all -p 8080:8080 -e PORT=8080 -v ./huggingface:/root/.cache/huggingface/ depth-pro-gpu:${version}
 ```
 
 ### CPU
@@ -33,5 +33,5 @@ docker run --gpus all -p 8080:8080 -e PORT=8080 -v ./huggingface:/root/.cache/hu
 bash install.sh  sam-2 cpu registry
 ```
 ```shell
-docker run -p 8080:8080 -e PORT=8080 -v ./huggingface:/root/.cache/huggingface/ sam-2-cpu:${version}
+docker run -p 8080:8080 -e PORT=8080 -v ./huggingface:/root/.cache/huggingface/ depth-pro-cpu:${version}
 ```
