@@ -16,8 +16,12 @@ app.add_middleware(LimitRequestSizeMiddleware)
 
 def __return_response(request: PredictArgs, stream=False, background_tasks: BackgroundTasks = None):
     if request.video is not None and request.images is not None:
-        Response(
+        return Response(
             "Cannot use both images and video in the same request", status_code=400
+        )
+    if request.video is not None and not stream:
+        return Response(
+            "Cannot use both video and without streaming", status_code=400
         )
     model = depthpro()
     response = model.call_model(images=request.images,
