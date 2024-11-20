@@ -1,0 +1,8 @@
+numpy<2.0.0
+fastapi
+python-multipart
+pydantic
+uvicorn
+toml
+imageio[ffmpeg]
+orjson

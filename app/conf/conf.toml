@@ -1,0 +1,6 @@
+[app]
+max_upload_size=104857600
+checkpoints_path='./checkpoints/depth_pro.pt'
+
+[file_uploader]
+base_path='depth_pro/data'

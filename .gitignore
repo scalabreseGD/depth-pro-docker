@@ -1,0 +1,6 @@
+ml-depth-pro/
+**/logfile.log
+**/.idea
+**/__pycache__
+.venv
+**/checkpoints/
