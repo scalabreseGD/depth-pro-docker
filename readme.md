@@ -13,6 +13,7 @@ Follow the instructions in [ML-DEPTH-PRO](https://github.com/apple/ml-depth-pro/
 <li>Login into nvcr.io</li>
 </ol>
 
+<b>REMEMBER TO DOWNLOAD THE CHECKPOINTS UNDER app/checkpoints</b>
 ## Build and Run
 ### Version
 ```shell
