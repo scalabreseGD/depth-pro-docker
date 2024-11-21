@@ -60,15 +60,15 @@ class DepthPro:
         else:
             boxes_by_frame = {}
 
-        images_boxes = [(frame_idx, image_pil, boxes_by_frame.get(frame_idx)) for
+        images_boxes = ((frame_idx, image_pil, boxes_by_frame.get(frame_idx)) for
                         frame_idx, (image_pil, image_size) in
-                        enumerate(images_pillow_with_size)]
-        depth_f_px_gen = [(frame_idx, self.__call_model(image=image_pil,
+                        enumerate(images_pillow_with_size))
+        depth_f_px_gen = ((frame_idx, self.__call_model(image=image_pil,
                                                         focal_length_px=focal_length_px,
                                                         boxes=boxes)) for frame_idx, image_pil, boxes in
                           tqdm_log(images_boxes, log_level='INFO',
-                                   desc='Perform Inference with Stream')]
-        response = [PredictResponse(response={frame_idx: resp}) for frame_idx, resp in depth_f_px_gen]
+                                   desc='Perform Inference with Stream'))
+        response = (PredictResponse(response={frame_idx: resp}) for frame_idx, resp in depth_f_px_gen)
         return response
 
     def __call_model(self, image, focal_length_px, boxes):
@@ -96,7 +96,7 @@ class DepthPro:
     def __get_mean_distance_in_bbox(focal_length_px, depth_array, boxes):
         depths = []
         for box_idx in range(len(boxes)):
-            x_min, y_min, x_max, y_max = [int(value) for value in boxes[box_idx]]
+            x_min, y_min, x_max, y_max = [int(value) for value in boxes[box_idx].bbox]
 
             # Slice the array to get the values within the bounding box
             values_inside_box = (depth_array[y_min:y_max, x_min:x_max]).mean()
