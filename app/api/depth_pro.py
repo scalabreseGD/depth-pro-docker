@@ -57,21 +57,24 @@ class DepthPro:
                                                      end_second=end_second)
         if box_objects:
             boxes_by_frame = self.__group_box_objects_by_frame(box_objects=box_objects)
+            has_boxes = True
         else:
             boxes_by_frame = {}
+            has_boxes = False
 
         images_boxes = ((frame_idx, image_pil, boxes_by_frame.get(frame_idx)) for
                         frame_idx, (image_pil, image_size) in
                         enumerate(images_pillow_with_size))
         depth_f_px_gen = ((frame_idx, self.__call_model(image=image_pil,
                                                         focal_length_px=focal_length_px,
-                                                        boxes=boxes)) for frame_idx, image_pil, boxes in
+                                                        boxes=boxes, has_boxes=has_boxes)) for
+                          frame_idx, image_pil, boxes in
                           tqdm_log(images_boxes, log_level='INFO',
                                    desc='Perform Inference with Stream'))
         response = (PredictResponse(response={frame_idx: resp}) for frame_idx, resp in depth_f_px_gen)
         return response
 
-    def __call_model(self, image, focal_length_px, boxes):
+    def __call_model(self, image, focal_length_px, boxes, has_boxes):
         self.__init_model()
         with torch.inference_mode():
             self.model.eval()
@@ -82,8 +85,10 @@ class DepthPro:
             if not focal_length_px:
                 focal_length_px = prediction["focallength_px"]  # Focal length in pixels.
             depth_numpy: np.ndarray = depth.cpu().numpy()
-            if boxes:
+            if has_boxes and boxes:
                 return self.__get_mean_distance_in_bbox(focal_length_px, depth_numpy, boxes)
+            elif has_boxes:
+                return []
             else:
                 return [DepthResponseImage(dept_matrix=depth_numpy.tolist(), focal_length_px=focal_length_px)]
 
